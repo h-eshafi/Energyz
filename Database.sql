@@ -300,3 +300,12 @@
         residence_type ENUM('Principale', 'Secondaire'),
         FOREIGN KEY (user_id) REFERENCES users(id)
     );
+
+    CREATE TABLE simulation(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    `date` DATE,
+    resultat TEXT,
+    `codeDepart` INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    );
