@@ -1,6 +1,6 @@
 
 
-    -- # ------------------------------------------------------------
+    -- Table Admin # ------------------------------------------------------------
 
 
     DROP TABLE IF EXISTS `admins`;
@@ -13,8 +13,8 @@
     `password` varchar(191)  NOT NULL,
     `image` varchar(191)  DEFAULT NULL,
     `phone` varchar(191)  DEFAULT NULL,
-    `address` text ,
-    `created_at` timestamp NULL DEFAULT NULL,
+    `address` text DEFAULT NULL, --default NULL
+    `created_at` timestamp NULL DEFAULT NULL, -- the current date On creation 
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `admins_email_unique` (`email`),
@@ -26,7 +26,7 @@
     /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
     INSERT INTO `admins` (`id`, `first_name`, `last_name`,`username`, `email`, `password`, `image`, `phone`, `address`, `created_at`)
     VALUES
-        (1,'admifn','admifnLast', 'admfinUsername', 'admifn@gmail.com','example@Password.Energyz','63134ebae203c1662209722.jpg','123456789','london','2021-03-08 12:58:38');
+        (1,'admifn','admifnLast', 'admfinUsername', 'admifn@gmail.com','example@Password.Energyz','enrergyz.jpg','123456789','london','2021-03-08 12:58:38');
     /*!40000 ALTER TABLE `admins` ENABLE KEYS */;
     UNLOCK TABLES;
 
@@ -35,11 +35,7 @@
 
 
 
-
-
-
-    -- # ------------------------------------------------------------ Table users
-
+    -- #Table users  ------------------------------------------------------------ 
 
     DROP TABLE IF EXISTS `users`;
     CREATE TABLE `users` (
@@ -50,25 +46,33 @@
     `email` varchar(191)  NOT NULL,
     `phone_code` varchar(15)  DEFAULT NULL,
     `phone` varchar(255)  DEFAULT NULL,
-    `balance` decimal(11,2) NOT NULL DEFAULT '0.00',
+    `credits` INT NOT NULL DEFAULT '0',
     `image` varchar(191)  DEFAULT NULL,
-    `address` text ,
-    `status` tinyint(1) NOT NULL DEFAULT '1',
+    `address` text DEFAULT NULL , 
+    `status` tinyint(1) NOT NULL DEFAULT '1',  -- Active ou pas!
     `email_verification` tinyint(1) NOT NULL DEFAULT '0',
-    `last_login` timestamp NULL DEFAULT NULL,
     `password` varchar(191)  NOT NULL,
-    `email_verified_at` timestamp NULL DEFAULT NULL,
-    `created_at` timestamp NULL DEFAULT NULL,
-    `updated_at` timestamp NULL DEFAULT NULL,
+    `created_at` timestamp NULL DEFAULT NULL, 
 
     PRIMARY KEY (`id`),
     UNIQUE KEY `users_email_unique` (`email`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+    -- #Table stimulations  ------------------------------------------------------------ 
+        CREATE TABLE `stimulation` ();
 
 
 
+
+
+    -- #Table property  ------------------------------------------------------------ 
+        CREATE TABLE `property` ();
+
+
+
+
+    -- #Table posts  ------------------------------------------------------------ 
 
 
     CREATE TABLE `posts` (
@@ -76,21 +80,27 @@
         `title` VARCHAR(255) NOT NULL,
         `content` TEXT NOT NULL,
         `author_id` INT UNSIGNED,
+        `author_name` INT UNSIGNED,        
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (`author_id`) REFERENCES `users`(`id`)
+        FOREIGN KEY (`author_name`) REFERENCES `users`(`firstname`)
     );
 
-    CREATE TABLE comments (
+        -- #Table comments  ------------------------------------------------------------ 
+
+
+    CREATE TABLE comments (   -- Requires login to comment
         `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         `post_id` INT UNSIGNED,
         `user_id` INT UNSIGNED,
         `content` TEXT NOT NULL,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
         FOREIGN KEY (`post_id`) REFERENCES posts(`id`),
         FOREIGN KEY (`user_id`) REFERENCES users(`id`)
     );
 
 
+     -- #Table newsletter   ------------------------------------------------------------ 
 
 
     CREATE TABLE newletter_emails (
@@ -98,12 +108,17 @@
         `first_name` VARCHAR(50) NOT NULL,
         `email` VARCHAR(100) NOT NULL UNIQUE,
         `subscribed_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        
+        
+        UNIQUE KEY `subscriber_email_unique` (`email`)   -- each email shouldn't be in subscribers table multiple times      
     );
 
 
+    -- #Table data general   ------------------------------------------------------------ 
+
 
     CREATE TABLE general_data (
-        `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        -- `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         `department_code` INT UNSIGNED NOT NULL,
         `construction_year` ENUM(
             'Avant 1975',
@@ -131,9 +146,17 @@
             '2 niveaux (rez+1)',
             '3 niveaux ou + (rez+2 ou plus)'
         ) NOT NULL,
-        `living_area` VARCHAR(255) NOT NULL
+        `living_area` VARCHAR(255) NOT NULL,
+
+        -- FOREIGN KEY (user_id) REFERENCES user(id),
+        -- FOREIGN KEY (property_id) REFERENCES property(id),
+        PRIMARY KEY (user_id, property_id),
+
+        UNIQUE KEY `department_code_unique` (`department_code`)
+
     );
 
+    
 
 
 
@@ -142,10 +165,11 @@
 
 
 
-   /* ----------------------------------------------- 2. Enveloppe thermique With forein keys */
 
 
 
+
+  ------------ 2. Enveloppe thermique With forein keys */
 
 
 
@@ -170,6 +194,7 @@
         FOREIGN KEY (property_id) REFERENCES property(id),
         PRIMARY KEY (user_id, property_id)
     );
+
 
     -- Table for Floor Insulation Data
 
@@ -228,10 +253,20 @@
     );
 
 
-    -- Table for Glazing Insulation Data
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
 
 
-    CREATE TABLE glazing_insulation (
+
+    -- Table for Glazing Insulation Data (Vitrage)
+
+
+    CREATE TABLE vitrage (
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
         glazing_type ENUM(
@@ -245,11 +280,12 @@
         PRIMARY KEY (user_id, property_id)
     );
 
-    ----------------------------------------------------------
 
 
 
     ---------------------------------------------------------------- Systèmes énergétiques 
+
+
 
     -- Table for Ventilation Data
     CREATE TABLE ventilation (
@@ -271,7 +307,8 @@
 
 
 
-    -------------------------------------------------------------Chauffage
+ --------------------------------------------------------  Chauffage
+
 
 
     -- Table for heating energy types
@@ -325,7 +362,7 @@
 
     -- Table for storing heating selections
     CREATE TABLE heating_selections (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        -- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
         energy_type_id INT UNSIGNED NOT NULL,
@@ -333,17 +370,18 @@
         FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (property_id) REFERENCES properties(id),
         FOREIGN KEY (energy_type_id) REFERENCES heating_energy_types(id),
-        FOREIGN KEY (heating_system_id) REFERENCES heating_systems(id)
+        FOREIGN KEY (heating_system_id) REFERENCES heating_systems(id),
+
+        PRIMARY KEY (user_id, property_id)
     );
 
-    --------------------------------------------------------------------
 
 
 
 
 
-    ----------------------------------------------------------------- Chauffage d'appoint
 
+-------------------------------------------------   Chauffage d'appoint
 
 
 
@@ -390,28 +428,28 @@
 
     -- Table for storing heating selections
     CREATE TABLE heating_selections (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+        -- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
         energy_type_id INT UNSIGNED,
+        has_chauffage_appoint ENUM('Oui', 'Non') NOT NULL,
         heating_system_id INT UNSIGNED,
-        has_chauffage_appoint BOOLEAN NOT NULL,
-        -- chauffage_appoint_system_id INT UNSIGNED,
         energy_type VARCHAR(255),
         heating_system VARCHAR(255),
         FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (property_id) REFERENCES properties(id),
         FOREIGN KEY (energy_type_id) REFERENCES heating_energy_types(id),
         FOREIGN KEY (heating_system_id) REFERENCES heating_systems(id),
-        -- FOREIGN KEY (chauffage_appoint_system_id) REFERENCES heating_systems(id)
+
+        PRIMARY KEY (user_id, property_id)
     );
 
-    ------------------------------------------------------
 
 
 
 
-    ----------------------------------------------------- Eau chaud sanitaire 
+--------------------------------------------------- Eau chaud sanitaire 
 
 
     -- Table for hot water energy types
@@ -448,9 +486,11 @@
     ('Le système de chauffage', 'Système de chauffage'),  
 
 
+
+
     -- Table for storing hot water selections
     CREATE TABLE hot_water_selections (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        -- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, --the id 2odfof
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
         energy_type_id INT UNSIGNED NOT NULL,
@@ -458,13 +498,10 @@
         FOREIGN KEY (user_id) REFERENCES users(id),
         FOREIGN KEY (property_id) REFERENCES properties(id),
         FOREIGN KEY (energy_type_id) REFERENCES hot_water_energy_types(id),
-        FOREIGN KEY (installation_type_id) REFERENCES hot_water_installation_types(id)
+        FOREIGN KEY (installation_type_id) REFERENCES hot_water_installation_types(id),
+
+        PRIMARY KEY (user_id, property_id)
     );
-
-
-
-
-    ------------------------------------------------------------------------
 
 
 
@@ -475,18 +512,21 @@
 
     ---------------------------------------------------------------4. Mon foyer 
 
+
     -- Table for estimating aid
     CREATE TABLE aid_estimation (
-        id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+        -- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
         reference_tax_income VARCHAR(255), -- Revenu fiscal de référence (free text)
         household_size INT, -- Number of people in the household including the user
-        is_property_older_than_15_years BOOLEAN, -- Is the property at least 15 years old?
+        is_property_older_than_15_years ENUM('Oui', 'Non') NOT NULL, -- Is the property at least 15 years old?
         residence_type ENUM('Principale', 'Secondaire'), -- Type of residence
 
         FOREIGN KEY (user_id) REFERENCES users(id),
-        FOREIGN KEY (property_id) REFERENCES properties(id)
+        FOREIGN KEY (property_id) REFERENCES properties(id),
+        
+        PRIMARY KEY (user_id, property_id)
     );
 
 
