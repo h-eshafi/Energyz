@@ -310,6 +310,16 @@
     FOREIGN KEY (user_id) REFERENCES users(id)
     );
 
+    CREATE TABLE pack(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    `date` DATE,
+    nom TEXT,
+    `description` VARCHAR(255),
+    `nSimulation` INT,
+    `prix` INT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    );
     
     CREATE TABLE property(
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -318,3 +328,16 @@
     adress TEXT,
     FOREIGN KEY (user_id) REFERENCES users(id)
     );
+
+    CREATE TABLE paiement(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    pack_id INT UNSIGNED NOT NULL,
+    date_ajout DATE,
+    adress TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (pack_id) REFERENCES pack(id)
+    );
+
+    paiement
+    id, adress, type de paiement, pack
