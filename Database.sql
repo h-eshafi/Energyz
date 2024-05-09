@@ -309,3 +309,12 @@
     `codeDepart` INT,
     FOREIGN KEY (user_id) REFERENCES users(id)
     );
+
+    
+    CREATE TABLE property(
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    date_ajout DATE,
+    adress TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    );
