@@ -147,7 +147,7 @@
     CREATE TABLE upper_floor_insulation (
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
-        nature ENUM(
+             ENUM(
             'Combles perdus (combles)',
             'Combles aménagés (combles)',
             'Toiture terrasse'
@@ -335,9 +335,11 @@
     pack_id INT UNSIGNED NOT NULL,
     date_ajout DATE,
     adress TEXT,
+    `type_payment` ENUM (
+        "Virement",
+        "Carte Bancaire",
+        "Paypal"
+    ) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (pack_id) REFERENCES pack(id)
     );
-
-    paiement
-    id, adress, type de paiement, pack
