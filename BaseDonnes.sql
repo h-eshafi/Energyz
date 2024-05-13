@@ -575,9 +575,3 @@
         FOREIGN KEY (property_id) REFERENCES property(id),
         PRIMARY KEY (user_id, property_id)
     );
-
-
-
-
-
-
