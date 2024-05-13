@@ -22,11 +22,11 @@
 
 
     LOCK TABLES `admins` WRITE;
-    /*!40000 ALTER TABLE `admins` DISABLE KEYS */;
+
     INSERT INTO `admins` (`id`, `first_name`, `last_name`,`username`, `email`, `password`, `image`, `phone`, `address`, `created_at`)
     VALUES
         (1,'admifn','admifnLast', 'admfinUsername', 'admifn@gmail.com','example@Password.Energyz','enrergyz.jpg','123456789','paris','2021-03-08 12:58:38');
-    /*!40000 ALTER TABLE `admins` ENABLE KEYS */
+
     UNLOCK TABLES;
 
 
@@ -34,9 +34,9 @@
 
 
 
-    -- #Table users  
+    
 
-    --DROP TABLE IF EXISTS `users`;
+    DROP TABLE IF EXISTS `users`;
     CREATE TABLE `users` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
     `firstname` varchar(191)  DEFAULT NULL,
@@ -61,7 +61,6 @@
 
 
 
-    -- #Table posts  ------------------------------------------------------------ 
 
 
     CREATE TABLE `posts` (
@@ -150,7 +149,8 @@
     
           -- #Table property  ------------------------------------------------------------ 
 
-              --this table is just for storing the data about the property that'll be shown to the user in his propreties table
+
+
     CREATE TABLE `property` (
         `id` int unsigned NOT NULL AUTO_INCREMENT,  
         `Nom_proprety` VARCHAR(255) NOT NULL,
@@ -393,7 +393,6 @@
     -- Table for Chauffage_principale selections
 
     CREATE TABLE Chauffage_principale_selections (
-        -- id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         user_id INT UNSIGNED NOT NULL,
         property_id INT UNSIGNED NOT NULL,
         energy_type_id INT UNSIGNED NOT NULL,
@@ -419,7 +418,6 @@
 
 
 
-  --   Chauffage d'appoint
 
 
 
@@ -551,7 +549,6 @@
 
 
 
--- next , laravel 
 
 
 
@@ -559,9 +556,7 @@
 
 
 
--- 4. Mon foyer 
 
-  -- Table for estimating aid
 
 
     CREATE TABLE Chiffrage_des_aides (
